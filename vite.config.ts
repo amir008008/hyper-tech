@@ -4,6 +4,6 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // ✅ IMPORTANT fix for custom domain
+  base: '/', // custom domain requires '/'
   resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
 })
