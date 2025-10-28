@@ -236,7 +236,7 @@ export default function HyperTechHome() {
            <img
              src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
              alt="Hyper-Tech"
-             className="block h-12 w-auto md:h-16 -ml-1"
+             className="block h-16 w-auto md:h-20 -ml-2"
              style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,.08))" }}
            />
           </a>
@@ -732,7 +732,7 @@ export default function HyperTechHome() {
             <img
               src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
               alt="Hyper-Tech logo"
-              className="h-8 w-auto md:h-10"
+              className="h-10 w-auto md:h-14"
             />
           </a>
 
