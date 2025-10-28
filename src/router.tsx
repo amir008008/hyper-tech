@@ -2,9 +2,21 @@ import { createBrowserRouter } from "react-router-dom";
 import SiteLayout from "@/layouts/SiteLayout";
 import HyperTechHome from "@/HyperTechHome";
 
-// lazy placeholders
-const P = (name: string) => () => <div className="mx-auto max-w-5xl px-4 py-14"><h1 className="text-3xl font-bold mb-4">{name}</h1><p style={{color:'var(--subtext)'}}>This is a placeholder. Replace with real content.</p></div>;
+// ✅ Define a proper React component with props
+type PProps = {
+  name: string;
+};
 
+const P: React.FC<PProps> = ({ name }) => (
+  <div className="mx-auto max-w-5xl px-4 py-14">
+    <h1 className="text-3xl font-bold mb-4">{name}</h1>
+    <p style={{ color: "var(--subtext)" }}>
+      This is a placeholder. Replace with real content.
+    </p>
+  </div>
+);
+
+// ✅ Router configuration
 export const router = createBrowserRouter([
   {
     element: <SiteLayout />,

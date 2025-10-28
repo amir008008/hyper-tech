@@ -5,7 +5,6 @@ import { motion  } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 
 import {
   Cpu,
@@ -19,8 +18,6 @@ import {
   Globe2,
   GitBranch,
   Zap,
-  Sun,
-  Moon,
 } from "lucide-react";
 import {
   AreaChart,
@@ -197,7 +194,7 @@ function useLiveChartSeries(length = 56) {
 
 export default function HyperTechHome() {
   const data = useMemo(genData, []);
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const live = useLiveChartSeries(56); // <- LIVE DATA FOR HERO
 
 
