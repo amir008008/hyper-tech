@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -149,22 +151,198 @@ const projects = [
     tags: ["Data", "Embeddings", "Pipelines"],
   },
 ];
+function useLiveChartSeries(length = 56) {
+  const [series, setSeries] = useState(
+    Array.from({ length }, (_, i) => ({
+      t: i,
+      tokens:
+        800 +
+        Math.round(130 * Math.sin(i / 3.4)) +
+        Math.round(90 * Math.cos(i / 6.2)) +
+        Math.round(Math.random() * 30),
+      latency:
+        120 +
+        Math.round(40 * Math.cos(i / 4.7)) +
+        Math.round(15 * Math.sin(i / 2.3)) +
+        Math.round(Math.random() * 10),
+    }))
+  );
+
+  useEffect(() => {
+    let rafId: number;
+    let acc = 0;
+    let lastT = series[series.length - 1]?.t ?? 0;
+
+    const loop = () => {
+      acc += 16; // ~60fps
+      if (acc >= 600) {
+        acc = 0;
+        lastT += 1;
+        setSeries(prev => {
+          const next = prev.slice(1);
+          next.push({
+            t: lastT,
+            tokens:
+              800 +
+              Math.round(130 * Math.sin(lastT / 3.4)) +
+              Math.round(90 * Math.cos(lastT / 6.2)) +
+              Math.round(Math.random() * 30),
+            latency:
+              120 +
+              Math.round(40 * Math.cos(lastT / 4.7)) +
+              Math.round(15 * Math.sin(lastT / 2.3)) +
+              Math.round(Math.random() * 10),
+          });
+          return next;
+        });
+      }
+      rafId = requestAnimationFrame(loop);
+    };
+
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  return series;
+}
 
 export default function HyperTechHome() {
   const data = useMemo(genData, []);
   const { theme, setTheme } = useTheme();
+  const live = useLiveChartSeries(56); // <- LIVE DATA FOR HERO
 
-  // Scroll-driven collapse and shared-element logo motion
-  const { scrollY } = useScroll();
-  const [collapsed, setCollapsed] = useState(false);
+
+
+// Live data hook for the hero chart (adds a point ~every 500ms)
+function useLiveSeries(n = 48) {
+  const [series, setSeries] = useState(
+    Array.from({ length: n }, (_, i) => ({
+      t: i,
+      tokens: 700 + Math.round(100 * Math.sin(i / 3)) + Math.round(Math.random() * 60),
+    }))
+  );
+
+
   useEffect(() => {
-    return scrollY.on("change", (v) => setCollapsed(v > 72));
-  }, [scrollY]);
+    let rafId: number;
+    let last = series[series.length - 1]?.t ?? 0;
+    let acc = 0;
+    const step = (ts: number) => {
+      // push a point roughly every 500ms
+      acc += 16;
+      if (acc >= 500) {
+        acc = 0;
+        last += 1;
+        setSeries((prev) => {
+          const next = prev.slice(1);
+          const nextVal =
+            700 +
+            Math.round(120 * Math.sin(last / 4)) +
+            Math.round(80 * Math.cos(last / 7)) +
+            Math.round(Math.random() * 40);
+          next.push({ t: last, tokens: nextVal });
+          return next;
+        });
+      }
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
-  // Logo transforms (larger in hero, shrinks into navbar)
-  const logoScale = useTransform(scrollY, [0, 140], [1, 0.7]); // 64px → ~45px
-  const logoY = useTransform(scrollY, [0, 140], [0, -12]);
-  const logoX = useTransform(scrollY, [0, 140], [0, -6]);
+  return series;
+}
+
+function LiveHeroStrip({ theme }: { theme: "dark" | "light" }) {
+  const live = useLiveSeries();
+  return (
+    <div
+      className="mt-6 rounded-2xl border"
+      style={{ borderColor: "var(--border)", background: "var(--card)" }}
+    >
+      <div className="grid gap-4 p-4 md:grid-cols-3">
+        {/* Chart */}
+        <div className="md:col-span-2">
+          <div className="mb-1 text-xs" style={{ color: "var(--subtext)" }}>
+            Live tokens processed (demo)
+          </div>
+          <div className="h-56 w-full" role="img" aria-label="Area chart showing tokens and latency over time">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={live} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={C.accent} stopOpacity={0.5} />
+                  <stop offset="95%" stopColor={C.accent} stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={C.highlight} stopOpacity={0.5} />
+                  <stop offset="95%" stopColor={C.highlight} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="t" hide />
+              <YAxis hide />
+              <Tooltip
+                contentStyle={{
+                  background: theme === "dark" ? DARK.bg : LIGHT.bg,
+                  border: `1px solid ${theme === "dark" ? DARK.border : LIGHT.border}`,
+                  borderRadius: 12,
+                  color: theme === "dark" ? "#fff" : LIGHT.text,
+                }}
+                labelStyle={{ color: "#9ca3af" }}
+              />
+              <Area type="monotone" dataKey="tokens"  stroke={C.accent}    fillOpacity={1} fill="url(#g1)" strokeWidth={2} />
+              <Area type="monotone" dataKey="latency" stroke={C.highlight} fillOpacity={1} fill="url(#g2)" strokeWidth={2} />
+            </AreaChart>
+          </ResponsiveContainer>
+
+
+          </div>
+
+        </div>
+
+        {/* Ticker */}
+        <div className="relative overflow-hidden rounded-xl border p-3"
+             style={{ borderColor: "var(--border)", background: "var(--bg)" }}>
+          <div className="text-xs mb-2" style={{ color: "var(--subtext)" }}>
+            Ops ticker
+          </div>
+          <div className="ticker">
+            <span className="chip">Throughput ↑ 1.7k/s</span>
+            <span className="chip">Latency P95 ↓ 118 ms</span>
+            <span className="chip">Cost /1k tok 0.0009 AED</span>
+            <span className="chip">Incidents 0 (last 24h)</span>
+            <span className="chip">Eval win-rate 62%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Ticker styles */}
+      <style>{`
+        .ticker {
+          display: inline-block;
+          white-space: nowrap;
+          animation: scroll 18s linear infinite;
+        }
+        .chip {
+          display: inline-block;
+          margin-right: 16px;
+          padding: 6px 10px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--card);
+          font-size: 12px;
+        }
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ticker { animation: none; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
   return (
     <div
@@ -188,28 +366,19 @@ export default function HyperTechHome() {
       </div>
 
       {/* BRAND MASTHEAD (Navbar + small reveal rail) */}
-      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/10 transition-[height] duration-300">
-        <div
-          className="mx-auto flex max-w-7xl items-center justify-between px-4"
-          style={{ paddingTop: collapsed ? "12px" : "20px", paddingBottom: collapsed ? "12px" : "20px" }}
-        >
-          {/* Logo (no frame, bigger, shared motion) */}
-          <motion.a
-            href="#"
-            aria-label="Hyper-Tech Home"
-            className="relative flex items-center"
-            style={{ x: logoX, y: logoY, scale: logoScale }}
-          >
+      <header
+        className="sticky top-0 z-40 bg-[var(--bg)]/70 backdrop-blur border-b"
+        style={{ borderColor: "var(--border)" }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:py-4">
+          <a href="#" aria-label="Hyper-Tech Home" className="flex items-center">
             <img
-              src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}  // dark -> dark.png, light -> logo.png
-              alt="Hyper-Tech logo"
-              className="h-[64px] w-auto"
-              decoding="async"
+              src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
+              alt="Hyper-Tech"
+              className="h-[44px] w-auto md:h-[52px]"
             />
-          </motion.a>
+          </a>
 
-
-          {/* Primary nav */}
           <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
             {["services", "projects", "visuals", "about"].map((id) => (
               <a
@@ -222,7 +391,6 @@ export default function HyperTechHome() {
             ))}
           </nav>
 
-          {/* CTAs */}
           <div className="flex items-center gap-2">
             <Input
               placeholder="Your email"
@@ -243,24 +411,8 @@ export default function HyperTechHome() {
             </button>
           </div>
         </div>
-
-        {/* Secondary brand rail (reveals after collapse) */}
-        <motion.div
-          className="border-t"
-          style={{ borderColor: "var(--border)" }}
-          initial={false}
-          animate={{ height: collapsed ? 40 : 0, opacity: collapsed ? 1 : 0 }}
-          transition={{ duration: 0.35 }}
-        >
-          <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4">
-            <BrandChip icon={<Bot className="h-3.5 w-3.5" />} label="LLM Apps" />
-            <BrandChip icon={<Database className="h-3.5 w-3.5" />} label="Data Engineering" />
-            <BrandChip icon={<ShieldCheck className="h-3.5 w-3.5" />} label="Cyber & Governance" />
-            <BrandChip icon={<ChartBar className="h-3.5 w-3.5" />} label="Analytics" />
-            <BrandChip icon={<Globe2 className="h-3.5 w-3.5" />} label="WebGL/Maps" />
-          </div>
-        </motion.div>
       </header>
+
 
       {/* HERO (hug the masthead; no top margin) */}
       <section className="relative mx-auto max-w-7xl px-4 pb-16 pt-6 md:pt-10">
@@ -315,6 +467,7 @@ export default function HyperTechHome() {
                 Our Work
               </Button>
             </div>
+
             <div className="mt-10 flex items-center gap-6" style={{ color: "var(--subtext)" }}>
               <div className="flex items-center gap-2">
                 <Zap className="h-4 w-4" aria-hidden /> <span>Fast iterations</span>
@@ -352,8 +505,8 @@ export default function HyperTechHome() {
               </div>
               <div className="h-56 w-full" role="img" aria-label="Area chart showing tokens and latency over time">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <defs>
+                <AreaChart data={live} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
                       <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={C.accent} stopOpacity={0.5} />
                         <stop offset="95%" stopColor={C.accent} stopOpacity={0} />
