@@ -233,11 +233,12 @@ export default function HyperTechHome() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:py-4">
           <a href="#" aria-label="Hyper-Tech Home" className="flex items-center">
-            <img
-              src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
-              alt="Hyper-Tech"
-              className="h-[44px] w-auto md:h-[52px]"
-            />
+           <img
+             src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
+             alt="Hyper-Tech"
+             className="block h-12 w-auto md:h-16 -ml-1"
+             style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,.08))" }}
+           />
           </a>
 
           <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
@@ -291,15 +292,12 @@ export default function HyperTechHome() {
               className="text-5xl font-extrabold leading-[1.05] tracking-tight md:text-7xl"
             >
               We build{" "}
-              <span
-                style={{
-                  backgroundImage: `linear-gradient(90deg, ${C.accent}, ${C.primary})`,
-                  WebkitBackgroundClip: "text",
-                  color: C.primary,
-                }}
-              >
-                AI-first
-              </span>{" "}
+               <span
+                 className="brand-gradient glitch"
+                 data-text="AI-first"
+                >
+                 AI-first
+               </span>{" "}
               platforms for the next decade.
             </motion.h1>
             <p className="mt-4 max-w-xl md:text-lg" style={{ color: "var(--subtext)" }}>
@@ -313,6 +311,64 @@ export default function HyperTechHome() {
               <Pill icon={ChartBar} label="Analytics" />
               <Pill icon={Globe2} label="WebGL/Maps" />
             </div>
+            <style>{`
+            :root{
+              --brand-primary: ${C.primary};
+              --brand-accent: ${C.accent};
+              --brand-highlight: ${C.highlight};
+            }
+
+            /* True brand gradient text */
+            .brand-gradient{
+              background-image: linear-gradient(90deg, var(--brand-accent), var(--brand-primary));
+              -webkit-background-clip: text;
+              background-clip: text;
+              color: transparent;
+              -webkit-text-fill-color: transparent;
+            }
+
+            /* Glitch effect (subtle, loops forever) */
+            .glitch{ position:relative; display:inline-block; }
+            .glitch::before, .glitch::after{
+              content: attr(data-text);
+              position:absolute; left:0; top:0;
+              pointer-events:none;
+              mix-blend-mode: normal;
+            }
+            /* cyan layer */
+            .glitch::before{
+              text-shadow: 1px 0 var(--brand-accent);
+              animation: gl1 2.1s infinite linear;
+            }
+            /* orange layer */
+            .glitch::after{
+              text-shadow: -1px 0 var(--brand-highlight);
+              animation: gl2 2.1s infinite linear;
+            }
+
+            @keyframes gl1{
+              0%,100%{ clip-path: inset(0 0 0 0); transform: translate(0,0); }
+              10%{ clip-path: inset(80% 0 0 0); transform: translate(1px,-1px); }
+              25%{ clip-path: inset(0 0 70% 0); transform: translate(-1px,1px); }
+              40%{ clip-path: inset(40% 0 40% 0); transform: translate(1px,0); }
+              55%{ clip-path: inset(5% 0 85% 0); transform: translate(0,1px); }
+              75%{ clip-path: inset(60% 0 20% 0); transform: translate(-1px,0); }
+            }
+            @keyframes gl2{
+              0%,100%{ clip-path: inset(0 0 0 0); transform: translate(0,0); }
+              12%{ clip-path: inset(0 0 85% 0); transform: translate(-1px,1px); }
+              28%{ clip-path: inset(70% 0 0 0); transform: translate(1px,-1px); }
+              45%{ clip-path: inset(20% 0 60% 0); transform: translate(0,1px); }
+              62%{ clip-path: inset(85% 0 5% 0); transform: translate(1px,0); }
+              82%{ clip-path: inset(30% 0 40% 0); transform: translate(-1px,-1px); }
+            }
+
+            /* Respect reduced motion */
+            @media (prefers-reduced-motion: reduce){
+              .glitch::before, .glitch::after{ animation: none !important; display:none; }
+            }
+          `}</style>
+
             <div className="mt-8 flex gap-3">
               <Button
                 className="rounded-xl"
@@ -676,7 +732,7 @@ export default function HyperTechHome() {
             <img
               src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
               alt="Hyper-Tech logo"
-              className="h-7 w-auto"
+              className="h-8 w-auto md:h-10"
             />
           </a>
 
