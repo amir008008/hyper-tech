@@ -226,54 +226,6 @@ export default function HyperTechHome() {
         />
       </div>
 
-      {/* BRAND MASTHEAD (Navbar + small reveal rail) */}
-      <header
-        className="sticky top-0 z-40 bg-[var(--bg)]/70 backdrop-blur border-b"
-        style={{ borderColor: "var(--border)" }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:py-4">
-          <a href="#" aria-label="Hyper-Tech Home" className="flex items-center">
-           <img
-             src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
-             alt="Hyper-Tech"
-             className="block h-16 w-auto md:h-20 -ml-2"
-             style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,.08))" }}
-           />
-          </a>
-
-          <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
-            {["services", "projects", "visuals", "about"].map((id) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                className="text-sm opacity-80 hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded"
-              >
-                {id[0].toUpperCase() + id.slice(1)}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder="Your email"
-              className="hidden h-9 w-40 md:block"
-              aria-label="Your email"
-              style={{ background: "var(--card)", color: "var(--text)" }}
-            />
-            <Button className="h-9 rounded-xl" style={{ background: C.highlight, color: "#fff" }}>
-              Contact
-            </Button>
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="inline-flex items-center justify-center rounded-lg border p-2 focus:outline-none focus-visible:ring-2"
-              style={{ borderColor: "var(--border)" }}
-            >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-          </div>
-        </div>
-      </header>
 
 
       {/* HERO (hug the masthead; no top margin) */}
