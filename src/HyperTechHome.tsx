@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion  } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -59,17 +59,6 @@ const DARK = {
   border: "rgba(255,255,255,0.12)",
 };
 
-function BrandChip({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div
-      className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs"
-      style={{ background: "var(--card)", borderColor: "var(--border)" }}
-    >
-      {icon}
-      <span>{label}</span>
-    </div>
-  );
-}
 
 // Theme hook — respects system preference + manual toggle
 function useTheme() {
@@ -253,96 +242,6 @@ function useLiveSeries(n = 48) {
   return series;
 }
 
-function LiveHeroStrip({ theme }: { theme: "dark" | "light" }) {
-  const live = useLiveSeries();
-  return (
-    <div
-      className="mt-6 rounded-2xl border"
-      style={{ borderColor: "var(--border)", background: "var(--card)" }}
-    >
-      <div className="grid gap-4 p-4 md:grid-cols-3">
-        {/* Chart */}
-        <div className="md:col-span-2">
-          <div className="mb-1 text-xs" style={{ color: "var(--subtext)" }}>
-            Live tokens processed (demo)
-          </div>
-          <div className="h-56 w-full" role="img" aria-label="Area chart showing tokens and latency over time">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={live} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={C.accent} stopOpacity={0.5} />
-                  <stop offset="95%" stopColor={C.accent} stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={C.highlight} stopOpacity={0.5} />
-                  <stop offset="95%" stopColor={C.highlight} stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="t" hide />
-              <YAxis hide />
-              <Tooltip
-                contentStyle={{
-                  background: theme === "dark" ? DARK.bg : LIGHT.bg,
-                  border: `1px solid ${theme === "dark" ? DARK.border : LIGHT.border}`,
-                  borderRadius: 12,
-                  color: theme === "dark" ? "#fff" : LIGHT.text,
-                }}
-                labelStyle={{ color: "#9ca3af" }}
-              />
-              <Area type="monotone" dataKey="tokens"  stroke={C.accent}    fillOpacity={1} fill="url(#g1)" strokeWidth={2} />
-              <Area type="monotone" dataKey="latency" stroke={C.highlight} fillOpacity={1} fill="url(#g2)" strokeWidth={2} />
-            </AreaChart>
-          </ResponsiveContainer>
-
-
-          </div>
-
-        </div>
-
-        {/* Ticker */}
-        <div className="relative overflow-hidden rounded-xl border p-3"
-             style={{ borderColor: "var(--border)", background: "var(--bg)" }}>
-          <div className="text-xs mb-2" style={{ color: "var(--subtext)" }}>
-            Ops ticker
-          </div>
-          <div className="ticker">
-            <span className="chip">Throughput ↑ 1.7k/s</span>
-            <span className="chip">Latency P95 ↓ 118 ms</span>
-            <span className="chip">Cost /1k tok 0.0009 AED</span>
-            <span className="chip">Incidents 0 (last 24h)</span>
-            <span className="chip">Eval win-rate 62%</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Ticker styles */}
-      <style>{`
-        .ticker {
-          display: inline-block;
-          white-space: nowrap;
-          animation: scroll 18s linear infinite;
-        }
-        .chip {
-          display: inline-block;
-          margin-right: 16px;
-          padding: 6px 10px;
-          border-radius: 999px;
-          border: 1px solid var(--border);
-          background: var(--card);
-          font-size: 12px;
-        }
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .ticker { animation: none; }
-        }
-      `}</style>
-    </div>
-  );
-}
 
   return (
     <div
