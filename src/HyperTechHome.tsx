@@ -37,7 +37,7 @@ import {
 
 // Brand palette
 const C = {
-  primary: "#1e6c69", // teal
+  primary: "#1e2c69", // teal
   accent: "#2893b6", // azure
   highlight: "#eb6101", // hyper orange
   bg: "#0a0e11", // dark bg
