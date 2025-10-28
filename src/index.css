@@ -1,1 +1,13 @@
 @import "tailwindcss";
+/* Smooth anchor scrolling with a *smaller* global offset */
+html {
+    scroll-behavior: smooth;
+    /* subtract ~20px so the section title sits closer to the header */
+    scroll-padding-top: calc(var(--header-h, 80px) - 90px);
+  }
+  
+  /* Per-target fallback (Safari) */
+  section[id] {
+    scroll-margin-top: calc(var(--header-h, 80px) - 82px);
+  }
+  
