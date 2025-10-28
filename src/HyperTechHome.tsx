@@ -203,44 +203,6 @@ export default function HyperTechHome() {
 
 
 // Live data hook for the hero chart (adds a point ~every 500ms)
-function useLiveSeries(n = 48) {
-  const [series, setSeries] = useState(
-    Array.from({ length: n }, (_, i) => ({
-      t: i,
-      tokens: 700 + Math.round(100 * Math.sin(i / 3)) + Math.round(Math.random() * 60),
-    }))
-  );
-
-
-  useEffect(() => {
-    let rafId: number;
-    let last = series[series.length - 1]?.t ?? 0;
-    let acc = 0;
-    const step = (ts: number) => {
-      // push a point roughly every 500ms
-      acc += 16;
-      if (acc >= 500) {
-        acc = 0;
-        last += 1;
-        setSeries((prev) => {
-          const next = prev.slice(1);
-          const nextVal =
-            700 +
-            Math.round(120 * Math.sin(last / 4)) +
-            Math.round(80 * Math.cos(last / 7)) +
-            Math.round(Math.random() * 40);
-          next.push({ t: last, tokens: nextVal });
-          return next;
-        });
-      }
-      rafId = requestAnimationFrame(step);
-    };
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  return series;
-}
 
 
   return (
