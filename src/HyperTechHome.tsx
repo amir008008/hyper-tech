@@ -76,9 +76,7 @@ const BRAND: {
   ],
 
   story: [
-    { y: "2020", t: "Hyper-Tech founded" },
-    { y: "2023", t: "GovTech projects across UAE" },
-    { y: "2025", t: "AI-first product suite expansion" },
+
   ],
 
   principles: [
@@ -999,8 +997,13 @@ export default function HyperTechHome() {
 
         {/* Story line */}
         <div className="mt-10 grid gap-3 md:grid-cols-4">
-          {BRAND.story.map((s) => (
-            <div key={s.y} className="rounded-2xl p-4" style={{ background: "var(--card)", border: `1px solid var(--border)` }}>
+          {BRAND.story?.length > 0 && (
+          BRAND.story.map((s) => (
+            <div
+              key={s.y}
+              className="rounded-2xl p-4"
+              style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+            >
               <div className="text-sm font-semibold" style={{ color: C.accent }}>
                 {s.y}
               </div>
@@ -1008,7 +1011,9 @@ export default function HyperTechHome() {
                 {s.t}
               </div>
             </div>
-          ))}
+          ))
+        )}
+
         </div>
 
         {/* Team */}
