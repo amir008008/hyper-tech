@@ -247,74 +247,7 @@ export const projects = [
 ];
 
 
-function HoverCard({
-  trigger,
-  children,
-}: {
-  trigger: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
 
-  // open on hover/focus/click; close on ESC
-  useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    if (open) document.addEventListener("keydown", onEsc);
-    return () => document.removeEventListener("keydown", onEsc);
-  }, [open]);
-
-  const openNow = () => setOpen(true);
-
-  return (
-    <div
-      ref={rootRef}
-      className="inline-block"
-      onMouseEnter={openNow}
-      onFocus={openNow}
-      onClick={() => setOpen(true)}
-    >
-      {trigger}
-
-      {open && (
-        <div
-          className="fixed inset-0 z-50 grid place-items-center p-4"
-          role="dialog"
-          aria-modal="true"
-          onMouseLeave={() => setOpen(false)} // leave the popup/backdrop → close
-        >
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-            aria-hidden
-          />
-
-          {/* Centered popup */}
-          <div
-            className="relative w-full max-w-md rounded-2xl border shadow-2xl animate-in fade-in zoom-in-95"
-            style={{ background: "var(--card)", borderColor: "var(--border)" }}
-          >
-            <div
-              className="flex items-center justify-between border-b px-4 py-3"
-              style={{ borderColor: "var(--border)" }}
-            >
-              <div className="text-sm opacity-80">Details</div>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                className="rounded p-1 hover:opacity-80 focus:outline-none focus-visible:ring-2"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="p-4">{children}</div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 
 function useLiveChartSeries(length = 56) {
