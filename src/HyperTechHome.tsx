@@ -20,8 +20,6 @@ import {
   Globe2,
   GitBranch,
   Zap,
-  Sun,
-  Moon,
 } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -55,7 +53,19 @@ const DARK = {
 
 // === Inlined copy (no copy.ts needed) ===
 // === Inlined copy (brand voice; drop-in replacement) ===
-const BRAND = {
+type StoryItem = { y: string; t: string };
+
+const BRAND: {
+  heroSub: string;
+  trustBullets: string[];
+  story: StoryItem[];
+  principles: [string, string][];
+  team: {
+    name: string;
+    role: string;
+    blurb: string;
+  }[];
+} = {
   heroSub:
     "We’re a senior engineering studio shipping AI, data, and security software. Small teams, weekly demos, transparent scope. Production or it doesn’t ship.",
 
@@ -66,6 +76,9 @@ const BRAND = {
   ],
 
   story: [
+    { y: "2020", t: "Hyper-Tech founded" },
+    { y: "2023", t: "GovTech projects across UAE" },
+    { y: "2025", t: "AI-first product suite expansion" },
   ],
 
   principles: [
@@ -81,7 +94,7 @@ const BRAND = {
       name: "Shahrukh Amir",
       role: "Founder · R&D",
       blurb:
-      "Lived in China for +12 years. Experienced Product manager at PowerChina Huadong. Serial entrepreneur and product leader building AI, data, and CV platforms across China and the Middle East. Masters, Zhejiang University.",
+        "Lived in China for 12+ years. Experienced Product Manager at PowerChina Huadong. Serial entrepreneur and product leader building AI, data, and CV platforms across China and the Middle East. Masters, Zhejiang University.",
     },
     {
       name: "Thibault Jacquemin",
@@ -109,6 +122,7 @@ const BRAND = {
     },
   ],
 };
+
 
 // Optional: centralize the “Why” cards instead of hardcoding them in the section
 const WHY = [
@@ -351,38 +365,7 @@ function useLiveChartSeries(length = 56) {
 }
 
 // --- Helpers: Shine button, Modal, UseCase popover ---
-function ShineButton({
-  children,
-  onClick,
-  className = "",
-  "aria-label": ariaLabel,
-}: {
-  children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-  "aria-label"?: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={ariaLabel}
-      className={`relative group inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-all
-        focus:outline-none focus-visible:ring-2 border ${className}`}
-      style={{ borderColor: "var(--border)", background: "var(--card)" }}
-    >
-      <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl" aria-hidden>
-        <span
-          className="absolute left-[-30%] top-0 h-full w-[30%] -skew-x-12 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)",
-          }}
-        />
-      </span>
-      {children}
-    </button>
-  );
-}
+
 function FocusButton(
   {
     children,
@@ -1114,7 +1097,8 @@ export default function HyperTechHome() {
              }}
            >
              <img
-               src={`/${m.name.toLowerCase().replaceAll(" ", "_")}.png`}
+               src={`/${m.name.toLowerCase().replace(/ /g, "_")
+               }.png`}
                alt={m.name}
                className="team-avatar h-20 w-20 rounded-full object-cover border"
                style={{ borderColor: "var(--border)" }}
