@@ -44,7 +44,7 @@ export default function SiteLayout() {
     return () => io.disconnect();
   }, []);
 
-  // global CTA wiring: any element with data-cta="email"
+  // global CTA wiring
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement)?.closest<HTMLElement>('[data-cta="email"]');
@@ -59,28 +59,27 @@ export default function SiteLayout() {
 
   return (
     <div style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
-      {/* NAVBAR */}
       <header
         ref={headerRef}
         id="site-header"
         className="sticky top-0 z-40 bg-[var(--bg)]/70 backdrop-blur border-b"
         style={{ borderColor: "var(--border)" }}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-8 py-3 md:py-5">
+        {/* same horizontal padding as hero (px-4) */}
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 pt-3 pb-6 md:pt-4 md:pb-10">
           {/* Brand + Motto */}
           <a href="/" aria-label="Hyper-Tech Home" className="flex items-center">
-            <img
-              src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
-              alt="Hyper-Tech logo"
-              className="h-[64px] md:h-[76px] w-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
-            />
-            <span className="ml-3 hidden md:flex flex-col items-start leading-tight select-none">
-              <span className="text-[12px] tracking-[0.18em] uppercase text-[var(--subtext)] font-semibold flex-none">
-              </span>
-              <span
-                className="motto-prism text-[12px] md:text-[13px] font-medium tracking-wide flex-none w-auto max-w-max"
-                aria-label="Company motto"
-              >
+          <img
+            src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
+            alt="Hyper-Tech logo"
+            className="w-auto h-[clamp(64px,7.2vw,96px)] drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+            style={{ marginBottom: "-3px" }}
+            loading="eager"
+            decoding="async"
+          />
+
+            <span className="ml-3 hidden md:flex flex-col leading-tight select-none">
+              <span className="text-[14px] md:text-[15px] font-medium tracking-wide motto-prism w-auto max-w-max">
                 {MOTTO}
               </span>
             </span>
@@ -95,7 +94,7 @@ export default function SiteLayout() {
                   key={id}
                   href={`#${id}`}
                   aria-current={isActive ? "true" : undefined}
-                  className={`text-sm transition-opacity rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]
+                  className={`text-sm transition-opacity
                     ${isActive ? "font-semibold text-[var(--accent)] opacity-100" : "opacity-70 hover:opacity-100"}`}
                 >
                   {id[0].toUpperCase() + id.slice(1)}
@@ -109,24 +108,21 @@ export default function SiteLayout() {
             <Input
               placeholder="Your email"
               className="hidden h-9 w-40 md:block"
-              aria-label="Your email"
               style={{ background: "var(--card)", color: "var(--text)" }}
             />
-            {/* Contact button → email */}
             <a
               href={MAILTO}
               data-cta="email"
               className="h-9 inline-flex items-center justify-center rounded-xl px-3 text-sm font-medium"
               style={{ background: C.highlight, color: "#fff" }}
-              aria-label="Email us"
             >
               Contact
             </a>
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="inline-flex items-center justify-center rounded-lg border p-2 focus:outline-none focus-visible:ring-2"
+              className="inline-flex items-center rounded-lg border p-2"
               style={{ borderColor: "var(--border)" }}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -136,33 +132,12 @@ export default function SiteLayout() {
 
       <main><Outlet /></main>
 
-      {/* Text-only prism highlight */}
       <style>{`
         .motto-prism{
-          position: relative;
-          display: inline-block;
-          background-image:
-            linear-gradient(var(--subtext), var(--subtext)),
-            linear-gradient(100deg, transparent 0%, rgba(255,255,255,.65) 10%, transparent 22%);
-          background-size: 100% 100%, 250% 100%;
-          background-repeat: no-repeat;
-          background-position: 0 0, -220% 0;
+          background-image: linear-gradient(var(--subtext), var(--subtext));
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
-          -webkit-text-fill-color: transparent;
-          animation: prismSweep 3.6s cubic-bezier(.22,.61,.36,1) infinite;
-        }
-        @keyframes prismSweep{
-          0%   { background-position: 0 0, -220% 0; }
-          12%  { background-position: 0 0, 120% 0; }
-          100% { background-position: 0 0, 120% 0; }
-        }
-        @media (prefers-reduced-motion: reduce){
-          .motto-prism{ 
-            background-image: linear-gradient(var(--subtext), var(--subtext));
-            animation: none !important;
-          }
         }
       `}</style>
     </div>
