@@ -523,8 +523,8 @@ export default function HyperTechHome() {
           <div>
             <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-5xl font-extrabold leading-[1.05] tracking-tight md:text-7xl">
               We build{" "}
-              <span className="brand-gradient glitch" data-text="AI-first">
-                AI-first
+              <span className="brand-gradient glitch" data-text="Simple-first">
+                Simple-first
               </span>{" "}
               platforms for the next decade.
             </motion.h1>
