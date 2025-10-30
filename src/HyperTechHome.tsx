@@ -1170,7 +1170,7 @@ export default function HyperTechHome() {
               <div className="space-y-2 text-sm" style={{ color: "var(--subtext)" }}>
                 <div className="flex items-start gap-2">
                   <svg className="h-4 w-4 mt-0.5 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z" opacity=".0"/><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span>Room 54, 13F, No. 252 Wensan Rd, Xihu, Hangzhou, Zhejiang</span>
+                  <span>Hangzhou International Talents Entrepreneurship & Innovation Park, Room 1012, 10th Floor, Building 1, No. 171, Xiangyuan Road</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <svg className="h-4 w-4 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z" opacity=".0"/><path d="M4 4l8 8 8-8"/><path d="M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6"/></svg>
@@ -1230,7 +1230,7 @@ export default function HyperTechHome() {
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <span>杭州海启软件科技有限公司</span>
-              <span>浙江省杭州市西湖区文三路252号13层54室</span>
+              <span>浙江省杭州国际人才创业创新园祥园路171号1幢10楼1012室</span>
               {/* Replace with your ICP/备案号 if applicable */}
               <a className="opacity-85 hover:opacity-100" href="/privacy">Privacy</a>
               <a className="opacity-85 hover:opacity-100" href="/terms">Terms</a>
