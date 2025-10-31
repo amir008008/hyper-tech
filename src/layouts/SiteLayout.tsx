@@ -70,7 +70,7 @@ export default function SiteLayout() {
           {/* Brand + Motto */}
           <a href="/" aria-label="Hyper-Tech Home" className="flex items-center">
           <img
-            src={theme === "dark" ? "/logodarkAI.png" : "/logowhiteAI.png"}
+            src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
             alt="Hyper-Tech logo"
             className="w-auto h-[clamp(64px,7.2vw,96px)] drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
             style={{ marginBottom: "-3px" }}
