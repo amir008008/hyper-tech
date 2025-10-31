@@ -1128,7 +1128,7 @@ export default function HyperTechHome() {
             <div className="space-y-4">
               <a href="/" className="inline-flex items-center gap-2" aria-label="Hyper-Tech Home">
                 <img
-                  src={theme === "dark" ? "/logodark.png" : "/logowhite.png"}
+                  src={theme === "dark" ? "/logodarkAI.png" : "/logowhiteAI.png"}
                   alt="Hyper-Tech logo"
                   className="h-10 w-auto md:h-14"
                 />
