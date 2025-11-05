@@ -537,19 +537,15 @@ useEffect(() => {
 }, [foundersImages.length]);
 
 // Independent auto-cycle for both sliders
+// Remove the two separate timers
+// and replace them with a single shared interval controlling both:
+
 useEffect(() => {
-  const financialTimer = setInterval(() => {
+  const interval = setInterval(() => {
     setFinancialIndex((prev) => (prev + 1) % financialImages.length);
-  }, 4000);
-
-  const foundersTimer = setInterval(() => {
     setFoundersIndex((prev) => (prev + 1) % foundersImages.length);
-  }, 4000);
-
-  return () => {
-    clearInterval(financialTimer);
-    clearInterval(foundersTimer);
-  };
+  }, 4000); // both advance at the same moment
+  return () => clearInterval(interval);
 }, [financialImages.length, foundersImages.length]);
 
   useEffect(() => {
@@ -1203,12 +1199,13 @@ useEffect(() => {
           src={financialImages[financialIndex].src}
           alt={financialImages[financialIndex].alt}
           className="absolute inset-0 w-full h-full object-cover rounded-xl"
-          variants={dissolveVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
         />
       </AnimatePresence>
+
     </div>
 
     {/* Right: description + thumbs */}
@@ -1217,7 +1214,7 @@ useEffect(() => {
         🏅 2023 — Financial AI App Award
       </h3>
       <p className="text-sm mb-4" style={{ color: "var(--subtext)" }}>
-        Our <strong style={{ color: C.highlight }}>“Financial AI”</strong> app was recognized for innovation in
+        Our <strong style={{ color: C.highlight }}>“Capital AI — Financial Coach”</strong> app was recognized for innovation in
         <strong style={{ color: C.accent }}> AI-driven financial applications</strong>.  
         Built with large language models, it enables users and founders to manage budgets, analyze costs,
         and plan investments through intelligent, conversational insights.
@@ -1295,12 +1292,13 @@ useEffect(() => {
             src={foundersImages[foundersIndex].src}
             alt={foundersImages[foundersIndex].alt}
             className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-            variants={dissolveVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           />
         </AnimatePresence>
+
 
         <div className="absolute inset-0 pointer-events-none">
           <div className="w-full h-full 
