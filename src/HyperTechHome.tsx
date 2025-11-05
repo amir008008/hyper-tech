@@ -521,7 +521,7 @@ export default function HyperTechHome() {
     { src: "/hyper3.jpg", alt: "Founders Space – image 3" },
   ];
   
-  const [index, setIndex] = useState(0);
+  const [, setIndex] = useState(0);
 
 // Add these two lines
 const [financialIndex, setFinancialIndex] = useState(0);
@@ -556,34 +556,7 @@ useEffect(() => {
   }, [images.length]);
 
   // Cyberpunk dissolve variants — glitchy scan & fade
-  const dissolveVariants = {
-    initial: {
-      opacity: 0,
-      scale: 1.05,
-      clipPath: "inset(0 0 100% 0)",
-      filter: "contrast(180%) brightness(1.2) saturate(1.5)",
-    },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      clipPath: "inset(0 0 0 0)",
-      filter: "contrast(100%) brightness(1) saturate(1)",
-      transition: {
-        duration: 1.2,
-        ease: [0.25, 1, 0.5, 1],
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.98,
-      clipPath: "inset(100% 0 0 0)",
-      filter: "contrast(200%) brightness(0.8) saturate(1.8)",
-      transition: {
-        duration: 1.1,
-        ease: [0.7, 0, 0.84, 0],
-      },
-    },
-  };
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden" style={{ background: "var(--bg)", color: "var(--text)" }}>
       {/* Subtle brand auras */}
