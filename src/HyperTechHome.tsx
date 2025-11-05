@@ -294,7 +294,6 @@ function useLiveChartSeries(length = 56) {
 
   return series;
 }
-
 // --- Helpers: Shine button, Modal, UseCase popover ---
 
 function FocusButton(
@@ -506,7 +505,89 @@ export default function HyperTechHome() {
   const data = useMemo(genData, []);
   const { theme } = useTheme();
   const live = useLiveChartSeries(56);
+  const images = [
+    { src: "/founderspace_award.png", alt: "Founders Space 1st Place Award" },
+    { src: "/founder.png", alt: "Founder Presentation" },
+  ];
+  const financialImages = [
+    { src: "/financialAI1.jpg", alt: "Financial AI Award – image 1" },
+    { src: "/financialAI2.jpg", alt: "Financial AI Award – image 2" },
+    { src: "/financialAI3.jpg", alt: "Financial AI Award – image 3" },
+  ];
+  
+  const foundersImages = [
+    { src: "/hyper1.jpg", alt: "Founders Space – image 1" },
+    { src: "/hyper2.jpg", alt: "Founders Space – image 2" },
+    { src: "/hyper3.jpg", alt: "Founders Space – image 3" },
+  ];
+  
+  const [index, setIndex] = useState(0);
 
+// Add these two lines
+const [financialIndex, setFinancialIndex] = useState(0);
+const [foundersIndex, setFoundersIndex] = useState(0);
+
+
+useEffect(() => {
+  const foundersTimer = setInterval(
+    () => setFoundersIndex((i) => (i + 1) % foundersImages.length),
+    5000
+  );
+  return () => clearInterval(foundersTimer);
+}, [foundersImages.length]);
+
+// Independent auto-cycle for both sliders
+useEffect(() => {
+  const financialTimer = setInterval(() => {
+    setFinancialIndex((prev) => (prev + 1) % financialImages.length);
+  }, 4000);
+
+  const foundersTimer = setInterval(() => {
+    setFoundersIndex((prev) => (prev + 1) % foundersImages.length);
+  }, 4000);
+
+  return () => {
+    clearInterval(financialTimer);
+    clearInterval(foundersTimer);
+  };
+}, [financialImages.length, foundersImages.length]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  // Cyberpunk dissolve variants — glitchy scan & fade
+  const dissolveVariants = {
+    initial: {
+      opacity: 0,
+      scale: 1.05,
+      clipPath: "inset(0 0 100% 0)",
+      filter: "contrast(180%) brightness(1.2) saturate(1.5)",
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      clipPath: "inset(0 0 0 0)",
+      filter: "contrast(100%) brightness(1) saturate(1)",
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 1, 0.5, 1],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.98,
+      clipPath: "inset(100% 0 0 0)",
+      filter: "contrast(200%) brightness(0.8) saturate(1.8)",
+      transition: {
+        duration: 1.1,
+        ease: [0.7, 0, 0.84, 0],
+      },
+    },
+  };
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden" style={{ background: "var(--bg)", color: "var(--text)" }}>
       {/* Subtle brand auras */}
@@ -1068,56 +1149,178 @@ export default function HyperTechHome() {
           </div>
         </div>
       </section>
+
       <section id="history" className="mx-auto max-w-7xl px-4 py-12 md:py-20">
-        <div className="mb-8 flex items-center gap-2">
-          <div className="h-6 w-1 rounded" style={{ background: C.primary }} />
-          <h2 className="text-2xl font-semibold md:text-3xl">Our Journey</h2>
-        </div>
+  {/* Section Header */}
+  <div className="mb-8 flex items-center gap-2">
+    <div className="h-6 w-1 rounded" style={{ background: C.primary }} />
+    <h2 className="text-2xl font-semibold md:text-3xl">Our Journey</h2>
+  </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="font-semibold mb-2">2020 — The First Office</h3>
-            <p className="text-sm" style={{ color: "var(--subtext)" }}>
-              We started from a two-desk room in Hangzhou. The goal was simple: build something real with no funding,
-              just code and persistence. From that small room, Hyper-Tech was born.
-            </p>
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <img src="/office1.png" alt="First office" className="rounded-lg" />
-              <img src="/office2.png" alt="Early work setup" className="rounded-lg" />
-            </div>
-          </div>
+  {/* 2020 */}
+  <div className="grid gap-8 md:grid-cols-2">
+    <div>
+      <h3 className="font-semibold mb-2">2020 — The First Office</h3>
+      <p className="text-sm" style={{ color: "var(--subtext)" }}>
+        We started from a two-desk room in Hangzhou. The goal was simple: build something real with no funding,
+        just code and persistence. From that small room, Hyper-Tech was born.
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <img src="/office1.png" alt="First office" className="rounded-lg object-cover" />
+        <img src="/office2.png" alt="Early work setup" className="rounded-lg object-cover" />
+      </div>
+    </div>
 
-          <div>
-            <h3 className="font-semibold mb-2">2021–2023 — Growth & Team</h3>
-            <p className="text-sm" style={{ color: "var(--subtext)" }}>
-              We grew from two people into a distributed R&D team across China, Sri Lanka, Africa, and Europe —
-              shipping AI, data, and computer-vision solutions for enterprise and startups alike.
-            </p>
-            <div className="mt-3 grid grid-cols-3 gap-3">
-              <img src="/team1.png" alt="Team meeting" className="rounded-lg" />
-              <img src="/team2.png" alt="Workshop" className="rounded-lg" />
-              <img src="/team3.png" alt="Hack session" className="rounded-lg" />
-            </div>
-          </div>
-        </div>
+    <div>
+      <h3 className="font-semibold mb-2">2021–2023 — Growth & Team</h3>
+      <p className="text-sm" style={{ color: "var(--subtext)" }}>
+        We grew from two people into a distributed R&D team across China, Sri Lanka, Africa, and Europe —
+        shipping AI, data, and computer-vision solutions for enterprises and startups alike.
+      </p>
+      <div className="mt-3 grid grid-cols-3 gap-3">
+        <img src="/team1.png" alt="Team meeting" className="rounded-lg object-cover" />
+        <img src="/team2.png" alt="Workshop" className="rounded-lg object-cover" />
+        <img src="/team3.png" alt="Hack session" className="rounded-lg object-cover" />
+      </div>
+    </div>
+  </div>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 items-center">
-          <div>
-            <h3 className="font-semibold mb-2">🏆 2024 — Founders Space Award</h3>
-            <p className="text-sm" style={{ color: "var(--subtext)" }}>
-              Our <strong>“Shop-N-Go” AI retail solution</strong> won <strong>1st place</strong> at the
-              <em> Founders Space Captains Acceleration Camp</em> — a recognition of practical, applied AI engineering.
-            </p>
-          </div>
+  {/* === 2023 – Financial AI App Award === */}
+  <div className="mt-20 grid md:grid-cols-[40%_1fr] gap-8 items-start">
+    {/* Left: slider */}
+    <div
+      className="relative aspect-[4/3] overflow-hidden rounded-xl border-2"
+      style={{
+        borderColor: `${C.primary}40`,
+        boxShadow: `0 0 15px ${C.primary}22`,
+        background: `linear-gradient(145deg, ${C.primary}10, ${C.accent}08)`,
+        maxWidth: "420px",
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={financialIndex}
+          src={financialImages[financialIndex].src}
+          alt={financialImages[financialIndex].alt}
+          className="absolute inset-0 w-full h-full object-cover rounded-xl"
+          variants={dissolveVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        />
+      </AnimatePresence>
+    </div>
+
+    {/* Right: description + thumbs */}
+    <div>
+      <h3 className="font-semibold mb-2" style={{ color: C.primary }}>
+        🏅 2023 — Financial AI App Award
+      </h3>
+      <p className="text-sm mb-4" style={{ color: "var(--subtext)" }}>
+        Our <strong style={{ color: C.highlight }}>“Financial AI”</strong> app was recognized for innovation in
+        <strong style={{ color: C.accent }}> AI-driven financial applications</strong>.  
+        Built with large language models, it enables users and founders to manage budgets, analyze costs,
+        and plan investments through intelligent, conversational insights.
+      </p>
+      <div className="flex gap-3">
+        {financialImages.map((img, i) => (
           <img
-            src="/founderspace_award.png"
-            alt="Founders Space 1st Place Award"
-            className="rounded-xl border"
+            key={i}
+            src={img.src}
+            alt={img.alt}
+            onClick={() => setFinancialIndex(i)}
+            className={`h-16 w-24 rounded-md border object-cover cursor-pointer transition-all duration-300 ${
+              i === financialIndex ? "ring-2 ring-[var(--highlight)] scale-105" : "opacity-80 hover:opacity-100"
+            }`}
             style={{ borderColor: "var(--border)" }}
           />
-        </div>
+        ))}
+      </div>
 
-      </section>
+      {/* Caption below the main image */}
+      <p className="text-xs text-gray-400 mt-3 italic">
+        {financialIndex === 0 && "With Mario Salazar C. — ZTVP Affiliate & Edtech Entrepreneur (Zhejiang University)"}
+        {financialIndex === 1 && "Award Certificate – MyFinancial-AI project shortlisted for the Most Investable Prize"}
+        {financialIndex === 2 && "Finalists of the Entrepreneurship Competition – Shahrukh Amir & Mario Salazar C."}
+      </p>
+    </div>
+  </div>
+
+{/* === 2024 – Founders Space 1st Place === */}
+<div className="mt-24">
+  <h3 className="font-semibold mb-3 text-cyan-400 text-center md:text-left">
+    🏆 2024 — Founders Space 1st Place
+  </h3>
+  <p className="text-sm text-gray-400 max-w-2xl md:mb-6 mb-4 md:text-left text-center mx-auto md:mx-0">
+    Hyper-Tech’s <strong className="text-orange-400">“Shop-N-Go” AI retail solution</strong> won
+    <strong className="text-cyan-300"> 1st Place </strong>at the Founders Space Captains Acceleration Camp — 
+    celebrating practical AI engineering and global collaboration. 
+    Founders Space, based in San Francisco, is led by CEO <strong>Steve Hoffman (Captain Hoff)</strong>, 
+    a leading voice in global startup innovation.
+  </p>
+
+  <div className="grid md:grid-cols-[1.2fr_0.8fr] gap-6 items-start">
+    {/* Left: photo mosaic */}
+    <div className="grid grid-cols-3 gap-3">
+      <img
+        src="/hyper1.jpg"
+        alt="Hyper-Tech team receiving 1st Place award"
+        className="rounded-xl border object-cover"
+        style={{ borderColor: "var(--border)" }}
+      />
+      <img
+        src="/hyper2.jpg"
+        alt="Founder with Steve Hoffman (Captain Hoff), CEO of Founders Space"
+        className="rounded-xl border object-cover"
+        style={{ borderColor: "var(--border)" }}
+      />
+      <img
+        src="/hyper3.jpg"
+        alt="Team holding the Founders Space certificate"
+        className="rounded-xl border object-cover"
+        style={{ borderColor: "var(--border)" }}
+      />
+    </div>
+
+    {/* Right: glowing slider */}
+    <div className="flex flex-col items-center w-full">
+      <div
+        className="relative aspect-[4/3] overflow-hidden rounded-2xl border-2 
+                   border-cyan-500/40 shadow-[0_0_20px_rgba(0,255,255,0.25)] 
+                   bg-gradient-to-br from-[#0a0f1c] to-[#05080f] max-w-sm w-full mx-auto"
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={foundersIndex}
+            src={foundersImages[foundersIndex].src}
+            alt={foundersImages[foundersIndex].alt}
+            className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            variants={dissolveVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="w-full h-full 
+            bg-[linear-gradient(rgba(0,255,255,0.05)_1px,transparent_1px)] 
+            bg-[length:100%_3px]" />
+        </div>
+      </div>
+
+      {/* Persistent caption below slider */}
+      <div className="mt-2 text-xs text-gray-400 italic text-center mx-auto w-full max-w-sm transition-opacity duration-500">
+        {foundersIndex === 0 && "1st Place Award Ceremony – Hyper-Tech Team"}
+        {foundersIndex === 1 && "Founder with Steve Hoffman (Captain Hoff), CEO of Founders Space"}
+        {foundersIndex === 2 && "Team celebrating the award with certificate in hand"}
+      </div>
+    </div>
+  </div>
+</div>
+
+</section>
+
 
       {/* FOOTER */}
       <footer className="py-12" style={{ borderTop: `1px solid var(--border)` }}>
