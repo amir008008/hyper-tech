@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {  AnimatePresence } from "framer-motion";
-import {  useInView } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { useInView } from "framer-motion";
+import { HERO } from "./hero"
 
 import {
   Cpu,
@@ -50,77 +51,6 @@ const DARK = {
   card: "rgba(255,255,255,0.06)",
   border: "rgba(255,255,255,0.12)",
 };
-
-// === Inlined copy (no copy.ts needed) ===
-// === Inlined copy (brand voice; drop-in replacement) ===
-type StoryItem = { y: string; t: string };
-
-const BRAND: {
-  heroSub: string;
-  trustBullets: string[];
-  story: StoryItem[];
-  principles: [string, string][];
-  team: {
-    name: string;
-    role: string;
-    blurb: string;
-  }[];
-} = {
-  heroSub:
-    "We’re a senior engineering studio shipping AI, data, and security software. Small teams, weekly demos, transparent scope. Production or it doesn’t ship.",
-
-  trustBullets: [
-    "GitHub-first delivery: issues, PRs, tags, and changelogs",
-    "Measured outcomes: latency, accuracy, cost per 1k tok",
-    "Exit-friendly handover: docs, infra as code, and runbooks",
-  ],
-
-  story: [
-
-  ],
-
-  principles: [
-    ["Outcomes over hype", "We prove value with dashboards, not decks."],
-    ["Security by default", "Least privilege, audit trails, reproducible builds."],
-    ["Write it down", "Decisions are versioned and linked to scope changes."],
-    ["Own your exit", "Handover includes docs, IaC, and operational runbooks."],
-    ["No gray projects", "We only work with reliable partners and clear governance."],
-  ],
-
-  team: [
-    {
-      name: "Shahrukh Amir",
-      role: "Founder · R&D",
-      blurb:
-        "Lived in China for 12+ years. Experienced Product Manager at PowerChina Huadong. Serial entrepreneur and product leader building AI, data, and CV platforms across China and the Middle East. Masters, Zhejiang University.",
-    },
-    {
-      name: "Thibault Jacquemin",
-      role: "Communication Adviser · R&D",
-      blurb:
-        "Image-processing background; turns complex systems into clear user stories. Master’s, Tsinghua University.",
-    },
-    {
-      name: "Vidusha Wijekoon",
-      role: "R&D",
-      blurb:
-        "Software developer with a degree in Software Development, Sichuan University, and industry experience in AI and embedded systems.",
-    },
-    {
-      name: "Chris de Dieu N. Likibi",
-      role: "R&D",
-      blurb:
-        "Neural-network focus (CNN) and application delivery. Master’s, Zhejiang University of Science & Technology.",
-    },
-    {
-      name: "Amisi Lumbu Espoir",
-      role: "R&D",
-      blurb:
-        "Full-stack developer; ships testable prototypes fast. Zhejiang University of Technology.",
-    },
-  ],
-};
-
 
 // Optional: centralize the “Why” cards instead of hardcoding them in the section
 const WHY = [
@@ -580,11 +510,11 @@ useEffect(() => {
             </motion.h1>
 
             <p className="mt-4 max-w-xl md:text-lg" style={{ color: "var(--subtext)" }}>
-              {BRAND.heroSub}
+              {HERO.heroSub}
             </p>
 
             <div className="mt-4 grid max-w-xl gap-2 text-sm" style={{ color: "var(--subtext)" }}>
-              {BRAND.trustBullets.map((b) => (
+              {HERO.trustBullets.map((b) => (
                 <div key={b} className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4" /> {b}
                 </div>
@@ -933,7 +863,7 @@ useEffect(() => {
           <h2 className="text-2xl font-semibold md:text-3xl">Principles</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {BRAND.principles.map(([h, p]) => (
+          {HERO.principles.map(([h, p]) => (
             <div key={h} className="ux-card p-4">
               <div className="font-semibold">{h}</div>
               <div className="mt-1 text-sm" style={{ color: "var(--subtext)" }}>{p}</div>
@@ -1047,8 +977,8 @@ useEffect(() => {
 
         {/* Story line */}
         <div className="mt-10 grid gap-3 md:grid-cols-4">
-          {BRAND.story?.length > 0 && (
-          BRAND.story.map((s) => (
+          {HERO.story?.length > 0 && (
+          HERO.story.map((s) => (
             <div
               key={s.y}
               className="rounded-2xl p-4"
@@ -1074,7 +1004,7 @@ useEffect(() => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {BRAND.team.map((m) => (
+            {HERO.team.map((m) => (
              <div
              key={m.name}
              className="team-card ux-card flex gap-4 items-start p-4"
